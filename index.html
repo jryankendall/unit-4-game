@@ -5,11 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Monster Hunt</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
+
 </head>
 <body>
-    
-    
+    <div class="title-header">
+        <h1>Monster Hunt-A-Thon</h1>
+
+    </div>
+    <div class="middle-content-spacer">
+
+        <div class="container whole-page-container">
+            <div class="monster-display row">
+                <div class="combat-log col-4 d-flex flex-column-reverse">
+                    <p>Your attack strikes the Great Jagras for 20 damage!</p>
+                    <div class="combat-log-divider">
+                    
+                    </div>
+                    <p>The Great Jagras counter-attacks for 15 damage!</p>
+
+                </div>
+                <div class="monster-health-bar-box col-lg-6 offset-lg-1 col-8 offset-0">
+                    <div id="monster-display-name">
+                        <h3>Great Jagras</h3>
+                    </div>
+                    <div id="monster-health-bar-backdrop">
+                        <div id="monster-health-bar">
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            
+            <div class="bottom-display row">
+                <div class="bottom-panel col-4 d-flex flex-column" id="action-panel">
+
+                    <div class="combat-option" id="attack-button">
+                    
+                        <h2>Attack</h2>
+
+                    </div>
+
+                    <div class="combat-option" id="potion-button">
+
+                        <h2>Potion</h2>
+
+                    </div>
+
+                </div>
+
+                <div class="bottom-panel col-8" id="status-display">
+                    <div class="hunter-display d-flex flex-row justify-content-between flex-nowrap">
+
+                        <div class="hunter-display-element d-flex flex-row flex-nowrap">
+
+                            <div id="hunter-armor-left">
+                                <img src="assets/images/armorset.png" id="hunter-image" alt="Behold! You!">
+                            </div>
+                            
+                            <div class="hunter-health-bar-backdrop d-flex flex-column-reverse">
+
+                                <div class="hunter-health-bar">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="hunter-display-element" id="hunter-weapon-right">
+                            <img src="assets/images/sword_shield.png" id="weapon-image" alt="You wield this cool thing.">
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
 
     <script type="text/javascript" src="assets/javascript/game.js"></script>
+
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </body>
 </html>

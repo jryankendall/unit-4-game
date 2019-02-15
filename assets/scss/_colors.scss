@@ -1,0 +1,63 @@
+.whole-page-container {
+    background-color: #ebdcbd;
+    border-color: rgb(80, 112, 167);
+}
+
+.monster-display {
+    border-color: rgb(80, 112, 167);
+}
+
+hr {
+    color: #ffffff;
+    background-color: #ffffff;
+}
+
+#status-display {
+    border-color: #ffffff;
+    background-color: rgb(80, 112, 167);
+}
+
+#action-panel {
+    background-color: rgb(80, 112, 167);
+    border-color: #ffffff;
+    color: #fefefe;
+}
+
+.monster-health-bar-box {
+    background-color: rgb(80, 112, 167);
+    border-color: #ffffff;
+}
+
+#monster-display-name {
+    color: #ffffff;
+}
+
+#monster-health-bar-backdrop {
+    background-color: #3D372C;
+}
+
+#monster-health-bar {
+    background-image: linear-gradient(#F08A13, #F8BD08, #F08A13);
+}
+
+.combat-option {
+    border: inset #ffffff;
+}
+
+.combat-log {
+    background-color: rgb(80, 112, 167);
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.combat-log-divider {
+    background-color: #fefefe;
+}
+
+.hunter-health-bar-backdrop {
+    background-color: #3D372C;
+}
+
+.hunter-health-bar {
+    background-image: linear-gradient(to left, green, #31FF0F, green);
+}

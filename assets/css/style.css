@@ -1,0 +1,199 @@
+html {
+  font-size: 62.5%;
+}
+
+body {
+  box-sizing: border-box;
+  background-color: #3D372C;
+}
+
+p {
+  font-size: 1.6rem;
+}
+
+h3 {
+  font-size: 2.4rem;
+}
+
+h2 {
+  font-size: 3.2rem;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+.title-header {
+  text-align: center;
+  color: #fefefe;
+}
+
+.whole-page-container {
+  height: 800px;
+  border: solid 1px;
+  z-index: 1;
+}
+
+.monster-display {
+  height: 66.6666666667%;
+}
+
+.bottom-display {
+  height: 33.3333333333%;
+}
+
+.bottom-panel {
+  height: 100%;
+}
+
+#status-display {
+  border-radius: 1.5%;
+  border: outset 4px;
+}
+
+.middle-content-spacer {
+  background-image: url("../images/mh_background.jpg");
+  background-size: 100% 100%;
+  background-position: center;
+  margin: auto;
+  vertical-align: middle;
+  z-index: -5;
+}
+
+#action-panel {
+  border-radius: 2.5%;
+  border: outset 4px;
+}
+
+.monster-health-bar-box {
+  height: 100px;
+  border: outset 4px;
+  border-radius: 2%;
+  margin-top: 12px;
+}
+
+#monster-display-name {
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+#monster-health-bar-backdrop {
+  width: 90%;
+  margin: auto;
+}
+
+#monster-health-bar {
+  width: 75%;
+  height: 30px;
+  z-index: 3;
+}
+
+.combat-option {
+  margin: 2%;
+  padding-left: 5%;
+  padding-top: 1%;
+  margin-top: 4%;
+}
+
+.combat-log {
+  border: outset 4px;
+}
+
+.combat-log-divider {
+  width: 100%;
+  height: 1px;
+  margin-bottom: 4px;
+}
+
+.hunter-health-bar-backdrop {
+  height: 90%;
+  margin: auto;
+  width: 10px;
+  z-index: 6;
+}
+
+.hunter-health-bar {
+  width: 100%;
+  height: 75%;
+  z-index: 3;
+}
+
+#hunter-armor-left, #hunter-weapon-right {
+  max-width: 100%;
+}
+
+#hunter-image, #weapon-image {
+  width: 100%;
+}
+
+.whole-page-container {
+  background-color: #ebdcbd;
+  border-color: #5070a7;
+}
+
+.monster-display {
+  border-color: #5070a7;
+}
+
+hr {
+  color: #ffffff;
+  background-color: #ffffff;
+}
+
+#status-display {
+  border-color: #ffffff;
+  background-color: #5070a7;
+}
+
+#action-panel {
+  background-color: #5070a7;
+  border-color: #ffffff;
+  color: #fefefe;
+}
+
+.monster-health-bar-box {
+  background-color: #5070a7;
+  border-color: #ffffff;
+}
+
+#monster-display-name {
+  color: #ffffff;
+}
+
+#monster-health-bar-backdrop {
+  background-color: #3D372C;
+}
+
+#monster-health-bar {
+  background-image: linear-gradient(#F08A13, #F8BD08, #F08A13);
+}
+
+.combat-option {
+  border: inset #ffffff;
+}
+
+.combat-log {
+  background-color: #5070a7;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.combat-log-divider {
+  background-color: #fefefe;
+}
+
+.hunter-health-bar-backdrop {
+  background-color: #3D372C;
+}
+
+.hunter-health-bar {
+  background-image: linear-gradient(to left, green, #31FF0F, green);
+}
+
+@media only screen and (max-width: 640px) {
+  h2 {
+    font-size: 2rem;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */
