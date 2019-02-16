@@ -266,11 +266,18 @@ function initHandlers() {
         playerBlock.weaponSwap(playerBlock.weapons[$(this).attr("value")]);
     })
 
+    $(".weapon-select-option").hover( function() {
+        weaponHover($(this).attr("value"));
+    }, function() {
+        $("#weapon-description-p").text("Select a weapon above. Hover over one to read its description and stats.");
+    }
+    )
+
     $(".monster-select-option").on("click", function() {
         monsterTarget = $(this).attr("value");
     })
     $(".monster-select-option").hover( function() {
-        monsterHover($(this).attr("value"));
+        monsterHover(eval($(this).attr("value")));
     }, function () {
         $("#monster-description-p").text("Select a monster above. Hover over one to read a description.");
     })
@@ -281,5 +288,14 @@ function combatLog(input) {
 }
 
 function monsterHover(input) {
-    $("#monster-description-p").text();
+    $("#monster-description-p").text(input.description);
+}
+
+function weaponHover(input) {
+    var evalWeapon = eval(playerBlock.weapons[input]);
+    $("#weapon-description-p").text(evalWeapon.description);
+}
+
+function displayWeapon() {
+    $("#ingame-weapon-display").html(playerBlock.weaponImage);
 }

@@ -28,10 +28,6 @@ h1 {
   color: #fefefe;
 }
 
-.row {
-  border: solid 1px black;
-}
-
 .whole-page-container {
   height: 768px;
   border: solid 1px;
@@ -167,12 +163,54 @@ h1 {
   width: 100%;
 }
 
+.prep-window-container {
+  border: outset 2px;
+}
+
 .weapon-select-header, .monster-select-header {
   text-align: center;
 }
 
 .weapon-buttons {
-  height: 300px;
+  height: fit-content;
+}
+
+.monster-select-option {
+  max-width: 33.3333333333%;
+  height: 150px;
+  display: flex;
+  flex-flow: column;
+}
+
+.monster-buttons {
+  height: 200px;
+}
+
+.monster-button-icon, .weapon-button-icon {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.weapon-select-option {
+  max-width: 25%;
+  max-height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
+.weapon-select-row {
+  border-bottom: solid 1px gray;
+}
+
+.weapon-select-option > p, .monster-select-option > p {
+  color: #000000;
+  align-self: center;
+  padding-top: 6px;
+}
+
+#weapon-description-textbox, #monster-description-textbox {
+  height: 100px;
+  border: solid 1px #fefefe;
 }
 
 .whole-page-container {
