@@ -29,7 +29,7 @@ h1 {
 }
 
 .whole-page-container {
-  height: 800px;
+  height: 768px;
   border: solid 1px;
   z-index: 1;
 }
@@ -66,10 +66,12 @@ h1 {
 }
 
 .monster-health-bar-box {
-  height: 100px;
+  height: 80px;
   border: outset 4px;
   border-radius: 2%;
-  margin-top: 12px;
+  margin-top: 2px;
+  z-index: 5;
+  position: absolute;
 }
 
 #monster-display-name {
@@ -84,8 +86,27 @@ h1 {
 
 #monster-health-bar {
   width: 75%;
-  height: 30px;
-  z-index: 3;
+  height: 20px;
+  z-index: 6;
+}
+
+.top-row-right-side {
+  background-image: url("../images/forest_backdrop.jpg");
+  background-size: 100% 100%;
+  position: relative;
+}
+
+.monster-render-container {
+  height: 100%;
+  margin: auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+}
+
+#monster-render-img {
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .combat-option {
@@ -95,14 +116,30 @@ h1 {
   margin-top: 4%;
 }
 
-.combat-log {
+.left-log-container {
   border: outset 4px;
+  padding: 0;
 }
 
-.combat-log-divider {
-  width: 100%;
-  height: 1px;
-  margin-bottom: 4px;
+.combat-log {
+  padding: 5%;
+  max-height: 75%;
+}
+
+.objective-tracker {
+  max-height: 25%;
+  border-bottom: outset 4px;
+  padding: 2%;
+}
+
+.quest-marker {
+  max-height: 100%;
+  max-width: 33%;
+}
+
+.quest-marker > img {
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .hunter-health-bar-backdrop {
@@ -110,6 +147,7 @@ h1 {
   margin: auto;
   width: 10px;
   z-index: 6;
+  margin-top: 10px;
 }
 
 .hunter-health-bar {
@@ -138,6 +176,10 @@ h1 {
 hr {
   color: #ffffff;
   background-color: #ffffff;
+}
+
+p {
+  color: #ffffff;
 }
 
 #status-display {
@@ -172,7 +214,7 @@ hr {
   border: inset #ffffff;
 }
 
-.combat-log {
+.combat-log, .left-log-container {
   background-color: #5070a7;
   border-color: #ffffff;
   color: #ffffff;

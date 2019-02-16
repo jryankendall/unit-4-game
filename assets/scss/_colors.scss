@@ -12,6 +12,10 @@ hr {
     background-color: #ffffff;
 }
 
+p {
+    color: #ffffff;
+}
+
 #status-display {
     border-color: #ffffff;
     background-color: rgb(80, 112, 167);
@@ -44,7 +48,7 @@ hr {
     border: inset #ffffff;
 }
 
-.combat-log {
+.combat-log, .left-log-container {
     background-color: rgb(80, 112, 167);
     border-color: #ffffff;
     color: #ffffff;
