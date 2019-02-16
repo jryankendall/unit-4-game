@@ -28,10 +28,15 @@ h1 {
   color: #fefefe;
 }
 
+.row {
+  border: solid 1px black;
+}
+
 .whole-page-container {
   height: 768px;
   border: solid 1px;
   z-index: 1;
+  display: none;
 }
 
 .monster-display {
@@ -55,8 +60,6 @@ h1 {
   background-image: url("../images/mh_background.jpg");
   background-size: 100% 100%;
   background-position: center;
-  margin: auto;
-  vertical-align: middle;
   z-index: -5;
 }
 
@@ -164,9 +167,25 @@ h1 {
   width: 100%;
 }
 
+.weapon-select-header, .monster-select-header {
+  text-align: center;
+}
+
+.weapon-buttons {
+  height: 300px;
+}
+
 .whole-page-container {
   background-color: #ebdcbd;
   border-color: #5070a7;
+}
+
+.prep-window-container {
+  background-color: #ebdcbd;
+}
+
+#weapon-description-textbox, #monster-description-textbox {
+  background-color: #3D372C;
 }
 
 .monster-display {

@@ -3,10 +3,15 @@
     color: #fefefe;
 }
 
+.row {
+    border: solid 1px black;
+}
+
 .whole-page-container {
     height: 768px;
     border: solid 1px;
     z-index: 1;
+    display: none;
 }
 
 .monster-display {
@@ -30,8 +35,6 @@
     background-image: url("../images/mh_background.jpg");
     background-size: 100% 100%;
     background-position: center;
-    margin: auto;
-    vertical-align: middle;
     z-index: -5;
 }
 
@@ -137,4 +140,12 @@
 
 #hunter-image, #weapon-image {
     width: 100%;
+}
+
+.weapon-select-header, .monster-select-header {
+    text-align: center;
+}
+
+.weapon-buttons {
+    height: 300px;
 }
