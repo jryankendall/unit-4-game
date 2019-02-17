@@ -5,6 +5,7 @@ html {
 body {
   box-sizing: border-box;
   background-color: #3D372C;
+  max-height: 100%;
 }
 
 p {
@@ -32,7 +33,6 @@ h1 {
   height: 768px;
   border: solid 1px;
   z-index: 1;
-  display: none;
 }
 
 .monster-display {
@@ -134,11 +134,14 @@ h1 {
 .quest-marker {
   max-height: 100%;
   max-width: 33%;
+  position: relative;
 }
 
-.quest-marker > img {
+.quest-marker-img {
   max-height: 100%;
   max-width: 100%;
+  z-index: 8;
+  position: relative;
 }
 
 .hunter-health-bar-backdrop {
@@ -151,7 +154,7 @@ h1 {
 
 .hunter-health-bar {
   width: 100%;
-  height: 75%;
+  height: 100%;
   z-index: 3;
 }
 
@@ -211,6 +214,15 @@ h1 {
 #weapon-description-textbox, #monster-description-textbox {
   height: 100px;
   border: solid 1px #fefefe;
+}
+
+.floating-x {
+  position: absolute;
+  max-width: 100%;
+  height: 120%;
+  z-index: 10;
+  top: 0;
+  left: 0;
 }
 
 .whole-page-container {
@@ -287,6 +299,16 @@ p {
 
 .hunter-health-bar {
   background-image: linear-gradient(to left, green, #31FF0F, green);
+}
+
+.monster-select-option:hover {
+  background-color: red;
+  border-radius: 15%;
+}
+
+.weapon-select-option:hover {
+  background-color: cyan;
+  border-radius: 15%;
 }
 
 @media only screen and (max-width: 640px) {

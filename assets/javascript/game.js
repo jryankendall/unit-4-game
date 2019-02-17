@@ -1,4 +1,4 @@
-$(document).ready( function() {
+$( function() {
     initHandlers();
     initGame();
 });
@@ -21,9 +21,9 @@ function initPlayer() {
     pr.accuracy = 1.0;
     pr.defense = 0;
     pr.evasion = 0.0;
-    pr.weapon = "none";
+    pr.weaponSwap(playerBlock.weapons.swordShield); //defaults to this in case the player just doesn't click anything before submit
     potionsRemaining = 3;
-    monstersDefeated = ["none"];
+    monstersDefeated = [];
 }
 
 function initMonsters() {
@@ -51,6 +51,8 @@ var playerBlock = {
     weaponImage: "",
     maxHP: 100,
     currentHP: 100,
+    verbs: ["pulverise", "defenestrate", "sock", "crump", "swinge", "wallop", "smite", "assault", "clobber", "thrash", "spank", "abuse"],
+    bodyParts: ["bung", "spine", "finger", "ulna", "pelvis", "duodenum", "epiglottis", "face", "pinky toe", "solar plexus", "funnybone", "cuticles", "ear", "eyebrow", "knee", "clavicle", "kidney", "cockles"],
     description: "You, person crazy enough to fight dinosaurs and dragons with a sword.",
     weaponSwap : function(clickedWeapon) {
         this.attack = clickedWeapon.attack;
@@ -68,7 +70,7 @@ var playerBlock = {
 
     weapons: {
         swordShield: {
-            name: "Sword and Shield",
+            name: "Sword",
             attack: 20,
             attackBoost: 1,
             defenseBoost: 1,
@@ -90,7 +92,7 @@ var playerBlock = {
             picture: '<img src="assets/images/great_sword.png" alt="Great Sword">'
         },
         lance: {
-            name: "Lance and Shield",
+            name: "Lance",
             attack: 17,
             attackBoost: 1,
             defenseBoost: 2,
@@ -113,16 +115,19 @@ var playerBlock = {
         },
     },
     makeAttack : function() {
-        var toHitRoll = Math.random();
-        if (toHitRoll <= this.accuracy) {
-            console.log("Your attack successfully hits the monster."); 
-            this.dealDamage(monsterTarget, this.attack, playerBlock.weapon);
-        } else
-            {console.log("Your attack misses the monster.")
-        };
+        if (monsterIsActive) {
+            var toHitRoll = Math.random();
+            if (toHitRoll <= this.accuracy) {
+                console.log("Your attack successfully hits the monster."); 
+                this.dealDamage(monsterTarget, this.attack, playerBlock.weapon);
+            } else
+                {console.log("Your attack misses the monster.")
+                combatLog("<p>Your attack misses the " + monsterTarget.name + "!</p>");
+            };
 
-        this.sufferDamage();
-        
+            this.sufferDamage();
+        } else
+        {console.log("Nothing to hit!")};
     },
     dealDamage : function(yourTarget, damageNum, equippedWeapon) {
 
@@ -132,24 +137,32 @@ var playerBlock = {
             damageDealt = 1;
         };
         yourTarget.currentHP -= damageDealt;
+        var attackWord = playerBlock.verbs[Math.floor(Math.random() * playerBlock.verbs.length)];
         console.log("Inflicted " + damageDealt + " damage to the " + yourTarget.name + " with your " + equippedWeapon.name + ".");
+        combatLog("<p>You " + attackWord + " the " + yourTarget.name + " with your " + playerBlock.weapon + " for " + damageDealt + " damage!</p>");
         this.attack += this.attackBoost;
         checkForDefeat(yourTarget);
     },
     sufferDamage : function() {
         //Checks to see if the monster is able to counterattack (ie not dead), and if it can, player takes damage
         if (monsterIsActive) {
-            var damageTaken = (Math.floor(Math.random() * 4) + monsterTarget.counterAttack) - this.defense;
-            if (damageTaken <= 0) {
-                damageTaken = 1;
-            };
-            this.currentHP -= damageTaken;
-            var monsterMethod = monsterTarget.weapon[Math.floor(Math.random() * monsterTarget.weapon.length)];
-            console.log("The " + monsterTarget.name + " " + monsterMethod + " you!" );
-            console.log("Player suffered: " + damageTaken + " damage.");
-            combatLog("The " + monsterTarget.name + " " + monsterMethod + " you for " + damageTaken + " damage!");
-            this.defense += this.defenseBoost;
-            checkForDefeat(this);
+            var monsterMethod = monsterTarget.weapon[Math.floor(Math.random() * eval(monsterTarget.weapon.length))];
+            var toHitRoll = Math.random();
+            if (toHitRoll <= (monsterTarget.accuracy - this.evasion)) { 
+                var damageTaken = (Math.floor(Math.random() * 4) + monsterTarget.counterAttack) - this.defense;
+                if (damageTaken <= 0) {
+                    damageTaken = 1;
+                };
+                this.currentHP -= damageTaken;
+                console.log("The " + monsterTarget.name + " " + monsterMethod + " you!" );
+                console.log("Player suffered: " + damageTaken + " damage.");
+                var playerPart = playerBlock.bodyParts[Math.floor(Math.random() * playerBlock.bodyParts.length)];
+                combatLog("<p>The " + monsterTarget.name + " " + monsterMethod + " you in the " + playerPart + " for " + damageTaken + " damage!</p>");
+                this.defense += this.defenseBoost;
+                checkForDefeat(this);
+            } else {
+                combatLog("<p>The " + monsterTarget.name + " tries and " + monsterMethod + " you, but you dodge the attack!</p>");
+            }
         } else
         {console.log("Monster cannot attack, no counter-attack suffered.");};
     },
@@ -181,6 +194,7 @@ var monsterJagras ={
     weapon: ["bites", "claws", "slams"],
     maxHP: 75,
     currentHP: 75,
+    iconId: "#jagras-holder",
     description: "Big grown-up version of the smaller, less-threatening Jagras. Big and shrugs off weak hits more easily, but has no real special attacks.",
     icon: '<img src="assets/images/icon_jagras.png" alt="Great Jagras Icon">',
     picture: '<img src="assets/images/jagras_render.png" alt="Great Jagras">'
@@ -196,6 +210,7 @@ var monsterAnjanath ={
     weapon: ["bites", "fireblasts", "swipes at"],
     maxHP: 100,
     currentHP: 100,
+    iconId: "#anja-holder",
     description: "Angry, with big jaws and tiny arms. Think of it as a T-Rex. Except it can shoot fire out of its nose. Don't give it black pepper. Hits a bit less often than the Great Jagras, but hits harder.",
     icon: '<img src="assets/images/icon_anja.png" alt="Anjanath Icon">',
     picture: '<img src="assets/images/anja_render.png" alt="Anjanath">'
@@ -211,6 +226,7 @@ var monsterRathian ={
     weapon: ["tailwhips", "fireballs", "divebombs", "buffets"],
     maxHP: 80,
     currentHP: 80,
+    iconId: "#rath-holder",
     description: "What you would probably call a 'green dragon' at first glance. Flies, hits like a truck, shoots fireballs, has a tail with a poison spike. And still is less vicious than her male counterpart, Rathalos. Accurate and hits hard.",
     icon: '<img src="assets/images/icon_rath.png" alt="Rathian Icon">',
     picture: '<img src="assets/images/rathian_render.png" alt="Rathian">'
@@ -220,7 +236,7 @@ var monsterRathian ={
 
 var monsterTarget = monsterJagras; //in case no monster is selected, defaults to Great Jagras
 var potionsRemaining;
-var monstersDefeated = ["none"];
+var monstersDefeated = [];
 var huntActive = true;
 
 //Global Functions
@@ -250,6 +266,8 @@ function playerDefeated() {
 
 function monsterDefeated() {
     console.log("Monster reduced to 0 or fewer HP, player victory.");
+    xOutMonster(monsterTarget.iconId);
+    monstersDefeated.push(monsterTarget.name);
     monsterIsActive = false;
 }
 
@@ -274,12 +292,20 @@ function initHandlers() {
     )
 
     $(".monster-select-option").on("click", function() {
-        monsterTarget = $(this).attr("value");
+        monsterTarget = eval($(this).attr("value"));
     })
     $(".monster-select-option").hover( function() {
         monsterHover(eval($(this).attr("value")));
     }, function () {
         $("#monster-description-p").text("Select a monster above. Hover over one to read a description.");
+    })
+
+    $(".submission-button").on("click", function() {
+        beginGame();
+    })
+
+    $(".flask-button").on("click", function() {
+        alert("You cannot get ye flask!");
     })
 }
 
@@ -298,4 +324,19 @@ function weaponHover(input) {
 
 function displayWeapon() {
     $("#ingame-weapon-display").html(playerBlock.weaponImage);
+}
+
+function beginGame() {
+    $("#preparation-page").addClass("d-none");
+    $("#gameplay-page").removeClass("d-none");
+    beginHunt();
+}
+
+function xOutMonster(input) {
+    var crossImg = $("<img>", {
+        "class" : "floating-x",
+        "src" : "assets/images/crossout.png"
+    });
+    $(input).append(crossImg);
+
 }
