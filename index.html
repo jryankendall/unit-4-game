@@ -123,10 +123,10 @@
 
                     </div>
                 </div>
-                <div class="top-row-right-side col-8">
+                <div class="top-row-right-side col-8" id="monster-render-display">
                     <div class="monster-health-bar-box col-lg-8 offset-lg-2 col-10 offset-1">
                         <div id="monster-display-name">
-                            <h3>Great Jagras</h3>
+                            <h3>Monster</h3>
                         </div>
                         <div id="monster-health-bar-backdrop">
                             <div id="monster-health-bar">
@@ -135,9 +135,32 @@
                         </div>
 
                     </div>
-                    <div class="monster-render-container">
-                        <img src="assets/images/jagras_render.png" id="monster-render-img">
+                    <div class="monster-render-container" id="monster-render-div">
                     </div>
+                </div>
+                <div class="col-8 hunt-intermission-screen flex-column d-none" id="intermission-screen">
+                    <div class="col-12 col-md-10 offset-md-1 d-flex flex-row justify-content-around" id="intermission-monster-select-div">
+                        <button type="button" class="btn intermission-select-option" value="monsterJagras" id="intermission-jagras-button">
+                            <img class="monster-button-icon" src="assets/images/icon_jagras.png" alt="Great Jagras Button">
+                        </button>
+                        <button type="button" class="btn intermission-select-option" value="monsterAnjanath" id="intermission-anjanath-button">
+                            <img class="monster-button-icon" src="assets/images/icon_anja.png" alt="Anjanath Button">
+                        </button>
+                        <button type="button" class="btn intermission-select-option" value="monsterRathian" id="intermission-rathian-button">
+                            <img class="monster-button-icon" src="assets/images/icon_rath.png" alt="Rathian Button">
+                        </button>
+
+                    </div>
+                    <div class="col-10 offset-1 intermission-textbox">
+                        <p id="intermission-instructions">Target defeated! Select your next foe. You cannot pick the same monster twice.</p>
+                    </div>
+
+                </div>
+
+                <div class="col-8 hunt-intermission-screen d-none" id="quest-failed-screen">
+                    <h2 id="end-screen-header">Carted!</h2>
+                    <p id="end-screen-text"> Ouch! That last attack knocked you out cold! You wake up at your camp, bruised but alive. Dust yourself off and try again! </p>
+                    <button type="button" class="btn btn-warning" id="restart-hunt-button"><p>Restart</p></button>
                 </div>
 
             </div>
@@ -153,7 +176,7 @@
 
                     <div class="combat-option" id="potion-button">
 
-                        <h2>Potion</h2>
+                        <h2>Wait Around</h2>
 
                     </div>
 
@@ -172,13 +195,13 @@
 
                                 <div class="hunter-health-bar-backdrop d-flex flex-column-reverse">
 
-                                    <div class="hunter-health-bar">
+                                    <div class="hunter-health-bar" id="hunter-health-id">
 
                                     </div>
 
                                 </div>
                                 <div class="numeric-hp">
-                                    <p id="hp-number">100</p>
+                                    <p id="hp-number"></p>
 
                                 </div>
                             </div>
@@ -186,7 +209,7 @@
                         </div>
 
                         <div class="hunter-display-element" id="hunter-weapon-right">
-                            <img src="assets/images/sword_shield.png" id="weapon-image" alt="You wield this cool thing.">
+                            <img src="assets/images/sword_shield.png" id="ingame-weapon-display" alt="You wield this cool thing.">
 
                         </div>
 

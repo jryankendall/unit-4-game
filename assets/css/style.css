@@ -97,15 +97,17 @@ h1 {
 
 .monster-render-container {
   height: 100%;
-  margin: auto;
+  width: 100%;
   display: flex;
-  flex-flow: column;
-  justify-content: flex-end;
+  flex-direction: column-reverse;
+  align-content: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
 #monster-render-img {
+  width: 100%;
   max-height: 100%;
-  max-width: 100%;
 }
 
 .combat-option {
@@ -178,7 +180,7 @@ h1 {
   height: fit-content;
 }
 
-.monster-select-option {
+.monster-select-option, .intermission-select-option {
   max-width: 33.3333333333%;
   height: 150px;
   display: flex;
@@ -223,6 +225,14 @@ h1 {
   z-index: 10;
   top: 0;
   left: 0;
+}
+
+.hunt-intermission-screen {
+  border: outset 4px;
+}
+
+#intermission-monster-select-div {
+  padding-top: 30px;
 }
 
 .whole-page-container {
@@ -309,6 +319,16 @@ p {
 .weapon-select-option:hover {
   background-color: cyan;
   border-radius: 15%;
+}
+
+.hunt-intermission-screen {
+  background-color: #5070a7;
+  border-color: #fefefe;
+  color: #ffffff;
+}
+
+#restart-hunt-button > p {
+  color: #000000;
 }
 
 @media only screen and (max-width: 640px) {

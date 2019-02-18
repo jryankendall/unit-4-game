@@ -24,6 +24,8 @@ function initPlayer() {
     pr.weaponSwap(playerBlock.weapons.swordShield); //defaults to this in case the player just doesn't click anything before submit
     potionsRemaining = 3;
     monstersDefeated = [];
+    monsterTarget = monsterJagras;
+    updateHealthDisplay(playerBlock);
 }
 
 function initMonsters() {
@@ -32,8 +34,14 @@ function initMonsters() {
     for (i = 0; i < monsterArray.length; i++) {
         var mrI = monsterArray[i];
         mrI.currentHP = mrI.maxHP;
+        $(mrI.intermissionId).removeClass("disabled");
     }
     monsterIsActive = true;
+
+    //removes the big X over monster's icons, in case starting over without refresh
+    $(".floating-x").remove();
+    updateHealthDisplay(monsterJagras);
+    
 }
 
 //Character setup
@@ -64,8 +72,8 @@ var playerBlock = {
         this.defenseBoost = clickedWeapon.defenseBoost;
         this.weaponImage = clickedWeapon.picture;
         displayWeapon();
-        console.log(clickedWeapon);
-        console.log(this.attack);
+        //console.log(clickedWeapon);
+        //console.log(this.attack);
     },
 
     weapons: {
@@ -74,7 +82,7 @@ var playerBlock = {
             attack: 20,
             attackBoost: 1,
             defenseBoost: 1,
-            defense: 15,
+            defense: 16,
             accuracy: 0.95,
             evasion: 0.15,
             description: "High mobility, precise, balanced attack and defense. No inherent weaknesses.",
@@ -85,7 +93,7 @@ var playerBlock = {
             attack: 32,
             attackBoost: 2,
             defenseBoost: 1,
-            defense: 10,
+            defense: 12,
             accuracy: 0.70,
             evasion: 0.0,
             description: "All-in on offense. Low defense, low mobility, slow and misses more often, hits hard when it connects. Gains power twice as quickly as other weapons.",
@@ -95,19 +103,19 @@ var playerBlock = {
             name: "Lance",
             attack: 17,
             attackBoost: 1,
-            defenseBoost: 2,
-            defense: 15,
+            defenseBoost: 1,
+            defense: 18,
             accuracy: 0.85,
             evasion: 0.08,
-            description: "Long spear and a great shield. Slightly reduced attack and accuracy, but high defense and decent evasion. Gains defense twice as quickly as other weapons.",
+            description: "Long spear and a great shield. Slightly reduced attack and accuracy, but high defense and decent evasion.",
             picture: '<img src="assets/images/lance_shield.png" alt="Lance and Shield">'
         },
         bowGun: {
             name: "Heavy Bowgun",
-            attack: 25,
+            attack: 26,
             attackBoost: 1,
             defenseBoost: 1,
-            defense: 6,
+            defense: 8,
             accuracy: 0.85,
             evasion: 0.25,
             description: "Handheld siege weapon. Hits hard and lets you keep your distance, boosting your ability to avoid attacks, but seriously lacks defense.",
@@ -115,19 +123,21 @@ var playerBlock = {
         },
     },
     makeAttack : function() {
-        if (monsterIsActive) {
+        
+        if (monsterIsActive && huntActive) {
+            
+            $("#combat-log").html("");
             var toHitRoll = Math.random();
             if (toHitRoll <= this.accuracy) {
-                console.log("Your attack successfully hits the monster."); 
+                //console.log("Your attack successfully hits the monster."); 
                 this.dealDamage(monsterTarget, this.attack, playerBlock.weapon);
             } else
-                {console.log("Your attack misses the monster.")
+                //{//console.log("Your attack misses the monster.")
                 combatLog("<p>Your attack misses the " + monsterTarget.name + "!</p>");
-            };
 
             this.sufferDamage();
-        } else
-        {console.log("Nothing to hit!")};
+        }
+        //{//console.log("Nothing to hit!")};
     },
     dealDamage : function(yourTarget, damageNum, equippedWeapon) {
 
@@ -138,9 +148,10 @@ var playerBlock = {
         };
         yourTarget.currentHP -= damageDealt;
         var attackWord = playerBlock.verbs[Math.floor(Math.random() * playerBlock.verbs.length)];
-        console.log("Inflicted " + damageDealt + " damage to the " + yourTarget.name + " with your " + equippedWeapon.name + ".");
+        //console.log("Inflicted " + damageDealt + " damage to the " + yourTarget.name + " with your " + equippedWeapon.name + ".");
         combatLog("<p>You " + attackWord + " the " + yourTarget.name + " with your " + playerBlock.weapon + " for " + damageDealt + " damage!</p>");
         this.attack += this.attackBoost;
+        updateHealthDisplay(monsterTarget);
         checkForDefeat(yourTarget);
     },
     sufferDamage : function() {
@@ -154,32 +165,40 @@ var playerBlock = {
                     damageTaken = 1;
                 };
                 this.currentHP -= damageTaken;
-                console.log("The " + monsterTarget.name + " " + monsterMethod + " you!" );
-                console.log("Player suffered: " + damageTaken + " damage.");
+                //console.log("The " + monsterTarget.name + " " + monsterMethod + " you!" );
+                //console.log("Player suffered: " + damageTaken + " damage.");
                 var playerPart = playerBlock.bodyParts[Math.floor(Math.random() * playerBlock.bodyParts.length)];
                 combatLog("<p>The " + monsterTarget.name + " " + monsterMethod + " you in the " + playerPart + " for " + damageTaken + " damage!</p>");
                 this.defense += this.defenseBoost;
+                updateHealthDisplay(playerBlock);
                 checkForDefeat(this);
             } else {
                 combatLog("<p>The " + monsterTarget.name + " tries and " + monsterMethod + " you, but you dodge the attack!</p>");
             }
-        } else
-        {console.log("Monster cannot attack, no counter-attack suffered.");};
+        } 
     },
     drinkPotion : function() {
-        if (potionsRemaining > 0) {
-            console.log("Potion done drank.");
-            this.currentHP += 50;
-            if (this.currentHP > this.maxHP) {
-                this.currentHP = this.maxHP;
-            };
-            //sufferDamage in here to ensure the player doesn't take damage even though they didn't drink a potion
-            this.sufferDamage();
-            potionsRemaining--;
+        if (monsterIsActive && huntActive) {
+            
+        $("#combat-log").html("");
 
-        } else
-        {console.log("Out of potions");};
-    }
+            //Removed potions from an ability, so just making this button do nothing for testing purposes.
+        /*   if (potionsRemaining > 0) {
+                //console.log("Potion done drank.");
+                this.currentHP += 50;
+                if (this.currentHP > this.maxHP) {
+                    this.currentHP = this.maxHP;
+                };
+                //sufferDamage in here to ensure the player doesn't take damage even though they didn't drink a potion
+                this.sufferDamage();
+                potionsRemaining--;
+
+            } else
+            //{//console.log("Out of potions");};*/
+            combatLog("<p>You sit around doing nothing for some reason and get smacked for your idleness.</p>");
+            this.sufferDamage();
+        }
+    }   
 };
 
 //Monster object setup
@@ -195,9 +214,10 @@ var monsterJagras ={
     maxHP: 75,
     currentHP: 75,
     iconId: "#jagras-holder",
+    intermissionId: "#intermission-jagras-button",
     description: "Big grown-up version of the smaller, less-threatening Jagras. Big and shrugs off weak hits more easily, but has no real special attacks.",
     icon: '<img src="assets/images/icon_jagras.png" alt="Great Jagras Icon">',
-    picture: '<img src="assets/images/jagras_render.png" alt="Great Jagras">'
+    picture: '<img src="assets/images/jagras_render.png" alt="Great Jagras" id="monster-render-img">'
 };
 
 var monsterAnjanath ={
@@ -211,9 +231,10 @@ var monsterAnjanath ={
     maxHP: 100,
     currentHP: 100,
     iconId: "#anja-holder",
+    intermissionId: "#intermission-anjanath-button",
     description: "Angry, with big jaws and tiny arms. Think of it as a T-Rex. Except it can shoot fire out of its nose. Don't give it black pepper. Hits a bit less often than the Great Jagras, but hits harder.",
     icon: '<img src="assets/images/icon_anja.png" alt="Anjanath Icon">',
-    picture: '<img src="assets/images/anja_render.png" alt="Anjanath">'
+    picture: '<img src="assets/images/anja_render.png" alt="Anjanath" id="monster-render-img">'
 };
 
 var monsterRathian ={
@@ -227,14 +248,16 @@ var monsterRathian ={
     maxHP: 80,
     currentHP: 80,
     iconId: "#rath-holder",
+    intermissionId: "#intermission-rathian-button",
     description: "What you would probably call a 'green dragon' at first glance. Flies, hits like a truck, shoots fireballs, has a tail with a poison spike. And still is less vicious than her male counterpart, Rathalos. Accurate and hits hard.",
     icon: '<img src="assets/images/icon_rath.png" alt="Rathian Icon">',
-    picture: '<img src="assets/images/rathian_render.png" alt="Rathian">'
+    picture: '<img src="assets/images/rathian_render.png" alt="Rathian" id="monster-render-img">'
 };
 
 //Other Global Variables
 
 var monsterTarget = monsterJagras; //in case no monster is selected, defaults to Great Jagras
+var allMonsters = [monsterJagras, monsterAnjanath, monsterRathian];
 var potionsRemaining;
 var monstersDefeated = [];
 var huntActive = true;
@@ -255,20 +278,27 @@ function checkForDefeat(tUnit) {
             monsterDefeated();
         }
 
-    } else
-    {console.log("Something went wrong in checkForDefeat(x).")};
+    }
 };
 
 function playerDefeated() {
-    console.log("Player reduced to 0 or fewer HP, defeated.");
+    //console.log("Player reduced to 0 or fewer HP, defeated.");
     huntActive = false;
+    endQuest("failed");
 }
 
 function monsterDefeated() {
-    console.log("Monster reduced to 0 or fewer HP, player victory.");
+    //console.log("Monster reduced to 0 or fewer HP, player victory.");
     xOutMonster(monsterTarget.iconId);
     monstersDefeated.push(monsterTarget.name);
     monsterIsActive = false;
+
+    if (monstersDefeated.length < allMonsters.length) {
+        monsterSelectDialog();
+    } else {
+    gameComplete();
+    endQuest("success");
+}
 }
 
 function initHandlers() {
@@ -307,6 +337,20 @@ function initHandlers() {
     $(".flask-button").on("click", function() {
         alert("You cannot get ye flask!");
     })
+
+    $(".intermission-select-option").on("click", function() {
+        var clickedMonster = eval($(this).attr("value"));
+        if ($.inArray(clickedMonster.name, monstersDefeated) == -1) {
+            monsterTarget = clickedMonster;
+            monsterIsActive = true;
+            nextMonsterSelected();
+            updateHealthDisplay(monsterTarget);
+        }
+    })
+
+    $("#restart-hunt-button").on("click", function() {
+        restartGame();
+    })
 }
 
 function combatLog(input) {
@@ -323,15 +367,29 @@ function weaponHover(input) {
 }
 
 function displayWeapon() {
-    $("#ingame-weapon-display").html(playerBlock.weaponImage);
+    $("#hunter-weapon-right").html(playerBlock.weaponImage);
 }
 
+//removes the prep-page and shows the combat screen
 function beginGame() {
+    setMonsterRender();
     $("#preparation-page").addClass("d-none");
     $("#gameplay-page").removeClass("d-none");
+    $("#monster-render-display").removeClass("d-none");
     beginHunt();
 }
 
+
+//Starts the game over
+function restartGame() {
+    initGame();
+    $("#quest-failed-screen").addClass("d-none");
+    $("#gameplay-page").addClass("d-none");
+    $("#preparation-page").removeClass("d-none");
+    $("#combat-log").html("");
+}
+
+//Crosses out the monster's icon on the top left, fades out the monster on the select dialog
 function xOutMonster(input) {
     var crossImg = $("<img>", {
         "class" : "floating-x",
@@ -339,4 +397,59 @@ function xOutMonster(input) {
     });
     $(input).append(crossImg);
 
+    $(monsterTarget.intermissionId).addClass("disabled");
+
+}
+
+
+//Removes combat screen, displays intermission screen
+function monsterSelectDialog() {
+    $("#monster-render-display").addClass("d-none");
+    $("#intermission-screen").removeClass("d-none");
+    $("#intermission-screen").addClass("d-flex");
+    $("#intermission-monster-select-div").removeClass("d-none");
+    $("#intermission-monster-select-div").addClass("d-flex");
+}
+
+
+//Removes intermission screen, returns player to combat screen
+function nextMonsterSelected() {
+    
+    setMonsterRender();
+    
+    $("#monster-render-display").removeClass("d-none");
+    $("#intermission-screen").addClass("d-none");
+    $("#intermission-screen").removeClass("d-flex");
+    $("#intermission-monster-select-div").addClass("d-none");
+    $("#intermission-monster-select-div").removeClass("d-flex");
+}
+
+function updateHealthDisplay(input) {
+    if (input.type == "player") {
+        $("#hunter-health-id").css("height", input.currentHP/input.maxHP*100+"%");
+    } else {
+    if (input.type == "monster") {
+        $("#monster-health-bar").css("width", input.currentHP/input.maxHP*100+"%");
+    }
+    }
+}
+
+function endQuest(input) {
+    $("#monster-render-display").addClass("d-none");
+    if (input == "failed") {
+        $("#end-screen-header").text("Carted!");
+        $("#end-screen-text").text("Ouch! That last attack knocked you out cold! You wake up at your camp, bruised but alive. Dust yourself off and try again!");
+    }
+    $("#quest-failed-screen").removeClass("d-none");
+}
+
+function gameComplete() {
+    huntActive = false;
+    $("#end-screen-header").text("Quest Complete!");
+    $("#end-screen-text").text("You did it! You defeated all the monsters in the hunt-a-thon and returned home safely. You're awarded with a big pile of zenny (that's money), and make a new suit of armor out of all the hides and scales you collected. Click 'Restart' below to start the game over if you wish to go again.")
+
+}
+
+function setMonsterRender() {
+    $("#monster-render-div").html(monsterTarget.picture);
 }
