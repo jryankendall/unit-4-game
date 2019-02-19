@@ -62,6 +62,7 @@ var playerBlock = {
     verbs: ["pulverise", "defenestrate", "sock", "crump", "swinge", "wallop", "smite", "assault", "clobber", "thrash", "spank", "abuse"],
     bodyParts: ["bung", "spine", "finger", "ulna", "pelvis", "duodenum", "epiglottis", "face", "pinky toe", "solar plexus", "funnybone", "cuticles", "ear", "eyebrow", "knee", "clavicle", "kidney", "cockles"],
     description: "You, person crazy enough to fight dinosaurs and dragons with a sword.",
+    //This will change all the player's stats to the ones defined by the weapon selected
     weaponSwap : function(clickedWeapon) {
         this.attack = clickedWeapon.attack;
         this.defense = clickedWeapon.defense;
@@ -85,7 +86,7 @@ var playerBlock = {
             defense: 16,
             accuracy: 0.95,
             evasion: 0.15,
-            description: "High mobility, precise, balanced attack and defense. No inherent weaknesses.",
+            description: "High mobility, precise, balanced attack and defense. No inherent weaknesses. Attack increases by 1 every time you land an attack, defense increases by 1 every time you take damage.",
             picture: '<img src="assets/images/sword_shield.png" alt="Sword and Shield">'
         },
         greatSword: {
@@ -94,9 +95,9 @@ var playerBlock = {
             attackBoost: 2,
             defenseBoost: 1,
             defense: 12,
-            accuracy: 0.70,
-            evasion: 0.0,
-            description: "All-in on offense. Low defense, low mobility, slow and misses more often, hits hard when it connects. Gains power twice as quickly as other weapons.",
+            accuracy: 0.78,
+            evasion: 0.05,
+            description: "All-in on offense. Low defense, low mobility, slow and misses more often, hits hard when it connects. Gains 2 Attack every time you land an attack, defense increases by 1 every time you take damage.",
             picture: '<img src="assets/images/great_sword.png" alt="Great Sword">'
         },
         lance: {
@@ -104,10 +105,10 @@ var playerBlock = {
             attack: 17,
             attackBoost: 1,
             defenseBoost: 1,
-            defense: 18,
-            accuracy: 0.85,
+            defense: 19,
+            accuracy: 0.90,
             evasion: 0.08,
-            description: "Long spear and a great shield. Slightly reduced attack and accuracy, but high defense and decent evasion.",
+            description: "Long spear and a great shield. Slightly reduced attack and accuracy, but high defense and decent evasion. Attack increases 1 by every time you land an attack, defense increases by 1 every time you take damage.",
             picture: '<img src="assets/images/lance_shield.png" alt="Lance and Shield">'
         },
         bowGun: {
@@ -115,13 +116,14 @@ var playerBlock = {
             attack: 26,
             attackBoost: 1,
             defenseBoost: 1,
-            defense: 8,
+            defense: 10,
             accuracy: 0.85,
             evasion: 0.25,
-            description: "Handheld siege weapon. Hits hard and lets you keep your distance, boosting your ability to avoid attacks, but seriously lacks defense.",
+            description: "Handheld siege weapon. Hits hard and lets you keep your distance, boosting your ability to avoid attacks, but seriously lacks defense. Attack increases 1 by every time you land an attack, defense increases by 1 every time you take damage.",
             picture: '<img src="assets/images/bowgun.png" alt="Heavy Bowgun">'
         },
     },
+    //called when you press Attack
     makeAttack : function() {
         
         if (monsterIsActive && huntActive) {
@@ -139,6 +141,8 @@ var playerBlock = {
         }
         //{//console.log("Nothing to hit!")};
     },
+
+    //Called if makeAttack connects
     dealDamage : function(yourTarget, damageNum, equippedWeapon) {
 
         //Adds 0-2 damage randomly to attack, reduces that by the target's defense, subtracts the result from monster's currentHP
@@ -149,11 +153,13 @@ var playerBlock = {
         yourTarget.currentHP -= damageDealt;
         var attackWord = playerBlock.verbs[Math.floor(Math.random() * playerBlock.verbs.length)];
         //console.log("Inflicted " + damageDealt + " damage to the " + yourTarget.name + " with your " + equippedWeapon.name + ".");
-        combatLog("<p>You " + attackWord + " the " + yourTarget.name + " with your " + playerBlock.weapon + " for " + damageDealt + " damage!</p>");
+        combatLog("<p>You " + attackWord + " the " + yourTarget.name + " with your " + equippedWeapon + " for " + damageDealt + " damage!</p>");
         this.attack += this.attackBoost;
         updateHealthDisplay(monsterTarget);
         checkForDefeat(yourTarget);
     },
+
+    //Called following makeAttack, inflicting damage on the player
     sufferDamage : function() {
         //Checks to see if the monster is able to counterattack (ie not dead), and if it can, player takes damage
         if (monsterIsActive) {
@@ -177,6 +183,8 @@ var playerBlock = {
             }
         } 
     },
+
+    //this function was gonna be a potion, now replaced with a "wait" for testing 
     drinkPotion : function() {
         if (monsterIsActive && huntActive) {
             
@@ -208,9 +216,9 @@ var monsterJagras ={
     type: "monster",
     attack: 0,
     counterAttack: 24,
-    accuracy: 0.80,
-    defense: 4,
-    weapon: ["bites", "claws", "slams"],
+    accuracy: 0.70,
+    defense: 3,
+    weapon: ["bites", "claws", "slams", "rolls onto"],
     maxHP: 75,
     currentHP: 75,
     iconId: "#jagras-holder",
@@ -224,10 +232,10 @@ var monsterAnjanath ={
     name: "Anjanath",
     type: "monster",
     attack: 0,
-    counterAttack: 29,
+    counterAttack: 30,
     accuracy: 0.75,
-    defense: 2,
-    weapon: ["bites", "fireblasts", "swipes at"],
+    defense: 4,
+    weapon: ["bites", "fireblasts", "swipes at", "stomps"],
     maxHP: 100,
     currentHP: 100,
     iconId: "#anja-holder",
@@ -241,12 +249,12 @@ var monsterRathian ={
     name: "Rathian",
     type: "monster",
     attack: 0,
-    counterAttack: 33,
-    accuracy: 0.85,
-    defense: 2,
-    weapon: ["tailwhips", "fireballs", "divebombs", "buffets"],
-    maxHP: 80,
-    currentHP: 80,
+    counterAttack: 34,
+    accuracy: 0.80,
+    defense: 5,
+    weapon: ["tailwhips", "fireballs", "divebombs", "buffets", "poisons", "chomps"],
+    maxHP: 110,
+    currentHP: 110,
     iconId: "#rath-holder",
     intermissionId: "#intermission-rathian-button",
     description: "What you would probably call a 'green dragon' at first glance. Flies, hits like a truck, shoots fireballs, has a tail with a poison spike. And still is less vicious than her male counterpart, Rathalos. Accurate and hits hard.",
