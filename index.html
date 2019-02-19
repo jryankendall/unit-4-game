@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Monster Hunt</title>
-
+    <link rel="icon" href="assets/images/favicon.ico" type="image/ico" sizes="64x64">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Images shamelessly "Borrowed" from the monster hunter wikis -->
 
 </head>
 <body>
@@ -126,7 +127,7 @@
                 <div class="top-row-right-side col-8" id="monster-render-display">
                     <div class="monster-health-bar-box col-lg-8 offset-lg-2 col-10 offset-1">
                         <div id="monster-display-name">
-                            <h3>Monster</h3>
+                            <h3 id="monster-name-h3">Monster</h3>
                         </div>
                         <div id="monster-health-bar-backdrop">
                             <div id="monster-health-bar">
@@ -168,13 +169,13 @@
             <div class="bottom-display row">
                 <div class="bottom-panel col-4 d-flex flex-column" id="action-panel">
 
-                    <div class="combat-option" id="attack-button">
+                    <div class="btn combat-option" id="attack-button">
                     
                         <h2>Attack</h2>
 
                     </div>
 
-                    <div class="combat-option" id="potion-button">
+                    <div class="btn combat-option" id="potion-button">
 
                         <h2>Wait Around</h2>
 
@@ -205,6 +206,14 @@
 
                                 </div>
                             </div>
+
+                        </div>
+
+                        <div class="hunter-display-element" id="middle-stats-area">
+                            <p id="hp-numeric">HP: </p>
+                            <p id="atk-numeric">ATK: </p>
+                            <p id="def-numeric">DEF: </p>
+                            <p id="eva-numeric">EV: </p>
 
                         </div>
 

@@ -1,4 +1,5 @@
 $( function() {
+    //waits til page is loaded, then sets up all event handlers and starts game
     initHandlers();
     initGame();
 });
@@ -80,24 +81,24 @@ var playerBlock = {
     weapons: {
         swordShield: {
             name: "Sword",
-            attack: 20,
+            attack: 21,
             attackBoost: 1,
             defenseBoost: 1,
-            defense: 16,
+            defense: 18,
             accuracy: 0.95,
-            evasion: 0.15,
-            description: "High mobility, precise, balanced attack and defense. No inherent weaknesses. Attack increases by 1 every time you land an attack, defense increases by 1 every time you take damage.",
+            evasion: 0.18,
+            description: "High mobility, precise, balanced attack and defense. No inherent weaknesses. Attack increases by 1 every time you land an attack, defense increases by 1 every time you take damage. Evasion increases by 1% and you recover 10 HP for every monster defeated.",
             picture: '<img src="assets/images/sword_shield.png" alt="Sword and Shield">'
         },
         greatSword: {
             name: "Great Sword",
             attack: 32,
             attackBoost: 2,
-            defenseBoost: 1,
+            defenseBoost: 2,
             defense: 12,
             accuracy: 0.78,
-            evasion: 0.05,
-            description: "All-in on offense. Low defense, low mobility, slow and misses more often, hits hard when it connects. Gains 2 Attack every time you land an attack, defense increases by 1 every time you take damage.",
+            evasion: 0.08,
+            description: "All-in on offense. Low defense, low mobility, slow and misses more often, hits hard when it connects. Gains 2 Attack every time you land an attack, defense increases by 2 every time you take damage. Evasion increases by 1% and you recover 10 HP for every monster defeated.",
             picture: '<img src="assets/images/great_sword.png" alt="Great Sword">'
         },
         lance: {
@@ -105,21 +106,21 @@ var playerBlock = {
             attack: 17,
             attackBoost: 1,
             defenseBoost: 1,
-            defense: 19,
+            defense: 21,
             accuracy: 0.90,
-            evasion: 0.08,
-            description: "Long spear and a great shield. Slightly reduced attack and accuracy, but high defense and decent evasion. Attack increases 1 by every time you land an attack, defense increases by 1 every time you take damage.",
+            evasion: 0.12,
+            description: "Long spear and a great shield. Slightly reduced attack and accuracy, but high defense and decent evasion. Attack increases 1 by every time you land an attack, defense increases by 1 every time you take damage. Evasion increases by 1% and you recover 10 HP for every monster defeated.",
             picture: '<img src="assets/images/lance_shield.png" alt="Lance and Shield">'
         },
         bowGun: {
             name: "Heavy Bowgun",
-            attack: 26,
+            attack: 30,
             attackBoost: 1,
-            defenseBoost: 1,
-            defense: 10,
-            accuracy: 0.85,
+            defenseBoost: 2,
+            defense: 9,
+            accuracy: 0.90,
             evasion: 0.25,
-            description: "Handheld siege weapon. Hits hard and lets you keep your distance, boosting your ability to avoid attacks, but seriously lacks defense. Attack increases 1 by every time you land an attack, defense increases by 1 every time you take damage.",
+            description: "Handheld siege weapon. Hits hard and lets you keep your distance, boosting your ability to avoid attacks, but seriously lacks defense. Attack increases 1 by every time you land an attack, defense increases by 2 every time you take damage. Evasion increases by 1% and you recover 10 HP for every monster defeated.",
             picture: '<img src="assets/images/bowgun.png" alt="Heavy Bowgun">'
         },
     },
@@ -148,6 +149,8 @@ var playerBlock = {
         //Adds 0-2 damage randomly to attack, reduces that by the target's defense, subtracts the result from monster's currentHP
         var damageDealt = (Math.floor(Math.random() * 3) + damageNum) - yourTarget.defense;
         if (damageDealt <= 0) {
+
+            //Prevents player attacks from healing monsters if somehow monster defense is higher than player attack
             damageDealt = 1;
         };
         yourTarget.currentHP -= damageDealt;
@@ -168,6 +171,8 @@ var playerBlock = {
             if (toHitRoll <= (monsterTarget.accuracy - this.evasion)) { 
                 var damageTaken = (Math.floor(Math.random() * 4) + monsterTarget.counterAttack) - this.defense;
                 if (damageTaken <= 0) {
+                    //Adds "chip damage" if for some reason player defense is higher than monster's counterattack
+                    //And of course prevents player from... being healed by monster attacks
                     damageTaken = 1;
                 };
                 this.currentHP -= damageTaken;
@@ -182,6 +187,7 @@ var playerBlock = {
                 combatLog("<p>The " + monsterTarget.name + " tries and " + monsterMethod + " you, but you dodge the attack!</p>");
             }
         } 
+        updateStatsLine();
     },
 
     //this function was gonna be a potion, now replaced with a "wait" for testing 
@@ -203,7 +209,8 @@ var playerBlock = {
 
             } else
             //{//console.log("Out of potions");};*/
-            combatLog("<p>You sit around doing nothing for some reason and get smacked for your idleness.</p>");
+            combatLog("<p>You sit around doing nothing for some reason and reduce your defense by 1.</p>");
+            this.defense -= 1;
             this.sufferDamage();
         }
     }   
@@ -300,6 +307,12 @@ function monsterDefeated() {
     xOutMonster(monsterTarget.iconId);
     monstersDefeated.push(monsterTarget.name);
     monsterIsActive = false;
+    playerBlock.evasion += 0.01;
+    playerBlock.currentHP += 10;
+    if (playerBlock.currentHP > playerBlock.maxHP) {
+        playerBlock.currentHP = playerBlock.maxHP;
+    }
+    updateHealthDisplay(playerBlock);
 
     if (monstersDefeated.length < allMonsters.length) {
         monsterSelectDialog();
@@ -310,6 +323,8 @@ function monsterDefeated() {
 }
 
 function initHandlers() {
+
+    //Implements all the handlers for clicking buttons
     $("#attack-button").on("click", function() {
         playerBlock.makeAttack();
     })
@@ -362,6 +377,7 @@ function initHandlers() {
 }
 
 function combatLog(input) {
+    //puts input text in the combat log
     $("#combat-log").append(input);
 }
 
@@ -385,6 +401,7 @@ function beginGame() {
     $("#gameplay-page").removeClass("d-none");
     $("#monster-render-display").removeClass("d-none");
     beginHunt();
+    updateStatsLine();
 }
 
 
@@ -430,9 +447,13 @@ function nextMonsterSelected() {
     $("#intermission-screen").removeClass("d-flex");
     $("#intermission-monster-select-div").addClass("d-none");
     $("#intermission-monster-select-div").removeClass("d-flex");
+    updateStatsLine();
+    updateHealthDisplay(playerBlock);
+    
 }
 
 function updateHealthDisplay(input) {
+    //checks if input is a player or monster, updates the health bar as appropriate
     if (input.type == "player") {
         $("#hunter-health-id").css("height", input.currentHP/input.maxHP*100+"%");
     } else {
@@ -443,6 +464,7 @@ function updateHealthDisplay(input) {
 }
 
 function endQuest(input) {
+    huntActive = false;
     $("#monster-render-display").addClass("d-none");
     if (input == "failed") {
         $("#end-screen-header").text("Carted!");
@@ -459,5 +481,14 @@ function gameComplete() {
 }
 
 function setMonsterRender() {
+    //sets monster's picture and name in the display
     $("#monster-render-div").html(monsterTarget.picture);
+    $("#monster-name-h3").text(monsterTarget.name);
+}
+
+function updateStatsLine() {
+    $("#hp-numeric").text("HP: " + playerBlock.currentHP);
+    $("#atk-numeric").text("ATK: " + playerBlock.attack);
+    $("#def-numeric").text("DEF: " + playerBlock.defense);
+    $("#eva-numeric").text("EV: " + Math.floor((playerBlock.evasion*100)) + "%");
 }

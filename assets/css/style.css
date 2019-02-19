@@ -235,6 +235,16 @@ h1 {
   padding-top: 30px;
 }
 
+.hunter-display-element > p {
+  margin: auto;
+}
+
+#middle-stats-area {
+  display: flex;
+  flex-flow: column;
+  flex-wrap: nowrap;
+}
+
 .whole-page-container {
   background-color: #ebdcbd;
   border-color: #5070a7;
@@ -291,6 +301,7 @@ p {
 
 .combat-option {
   border: inset #ffffff;
+  color: #ffffff;
 }
 
 .combat-log, .left-log-container {
@@ -334,6 +345,11 @@ p {
 @media only screen and (max-width: 640px) {
   h2 {
     font-size: 2rem;
+  }
+}
+@media only screen and (max-width: 640px) {
+  #middle-stats-area {
+    display: none;
   }
 }
 
